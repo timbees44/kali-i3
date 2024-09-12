@@ -1,5 +1,6 @@
 ---
-- hosts: all
+- hosts: localhost
+  become: yes
   vars:
     - i3_use_gaps: false
     - i3_terminal: xfce4-terminal
@@ -9,6 +10,11 @@
   become_user: kali
   become: true
   tasks:
+  - name: Install Ansible Galaxy roles
+    ansible.builtin.command:
+      cmd: "ansible-galaxy install -r requirements.yml -p roles"
+    delegate_to: localhost
+    run_once: true
   - name: Install missing packages
     become: yes
     become_user: root
